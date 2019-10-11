@@ -26,18 +26,46 @@ platforms = [
     Linux(:x86_64, libc=:glibc)
 ]
 
+modelfiles = [
+    "arm26.xml",
+    "carpet.png",
+    "cloth.xml",
+    "grid1pin.xml",
+    "grid1.xml",
+    "grid2pin.xml",
+    "grid2.xml",
+    "hammock.xml",
+    "humanoid100.xml",
+    "humanoid.xml",
+    "loop.xml",
+    "marble.png",
+    "particle.xml",
+    "rope.xml",
+    "scene.xml",
+    "softbox.xml",
+    "softcylinder.xml",
+    "softellipsoid.xml",
+    "sponge.png",
+]
+
+modelproducts = (prefix) -> map(modelfiles) do f
+    FileProduct(prefix, f, Symbol(replace(f, "." => "_")))
+end
+
+
 # The products that we will ensure are always built
 products(prefix) = [
     LibraryProduct(prefix, "libmujoco200", :libmujoco),
     LibraryProduct(prefix, "libglewegl", :libglewegl),
     LibraryProduct(prefix, "libglewosmesa", :libglewosmesa),
     LibraryProduct(prefix, "libmujoco200nogl", :libmujoconogl),
-    LibraryProduct(prefix, "libglew", :libglew)
+    LibraryProduct(prefix, "libglew", :libglew),
+    modelproducts(prefix)...
 ]
 
 # Dependencies that must be installed before this package can be built
 dependencies = [
-    
+
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
